@@ -11,21 +11,21 @@ int main(int argc, char *argv[]) {
     }
 
     // SETUP
-
+    
     // first, read the minuend (number to be subtracted from)
     char buff;
     bool minuend[8]; // suggested that you store bits as array of bools; minuend[0] is the LSB
     for (int i=7; 0<=i; i--) { // read MSB first as that is what comes first in the file
-        /* ... */
+        //Transforming the character read from stream to int and then to bool 
+        minuend[i] = (bool) (fgetc(fp) - '0');
     }
-
-    // notice that you are reading two different lines; caution with reading
-    /* ... */
+    
+    fgetc(fp);
 
     // second, read the subtrahend (number to subtract)
     bool subtrahend[8]; // suggested that you store bits as array of bools; subtrahend[0] is the LSB
     for (int i=7; 0<=i; i--) { // read MSB first as that is what comes first in the file
-        /* ... */
+        subtrahend[i] = (bool) (fgetc(fp) - '0');
     }
 
     // WE WILL DO SUBTRACTION BY NEGATING THE SUBTRAHEND AND ADD THAT TO THE MINUEND
@@ -39,14 +39,13 @@ int main(int argc, char *argv[]) {
     for (int i=0; i<8; i++) { // iterate from LSB to MSB
         /* ... */
     }
-
     // Add the minuend and the negated subtrahend
     bool difference[8];
     /* ... */
 
     // print the difference bit string
     for (int i=7; 0<=i; i--)
-        printf("%d",difference[i]);
+        printf("%d",subtrahend[i]);
 
     return EXIT_SUCCESS;
 
