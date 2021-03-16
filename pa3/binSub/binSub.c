@@ -40,7 +40,6 @@ int main(int argc, char *argv[]) {
     int result = 0;
     for (int i=0; i<8; i++) { // iterate from LSB to MSB
         result = minuend[i] + subtrahend[i] + carry;
-        printf("%d %d %d %d\n",minuend[i],subtrahend[i],carry,result);
         if(result == 0){
             difference[i] = false;
             carry = false;
@@ -57,12 +56,6 @@ int main(int argc, char *argv[]) {
         }
     }
     // print the difference bit string
-    for (int i=7; 0<=i; i--)
-        printf("%d",minuend[i]);
-    printf("\n");
-    for (int i=7; 0<=i; i--)
-        printf("%d",subtrahend[i]);
-    printf("\n");
     for (int i=7; 0<=i; i--)
         printf("%d",difference[i]);
     
