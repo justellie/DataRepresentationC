@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
 
     // THE SIGN BIT
     bool sign = value<0;
+    
     printf("%d_",sign);
    // assert (sign == (1&ref_bits>>(EXP_SZ+FRAC_SZ))); // validate your result against the reference
     
@@ -76,7 +77,16 @@ int main(int argc, char *argv[]) {
     {
         if(trial_exp!=0)
         {
-            nf= ldexp ( nf, -(trial_exp-1) );
+            
+            if (trial_exp==1024)
+            {
+                nf= ldexp ( nf, -(-(trial_exp-2)) );
+            }
+            else
+            {
+                nf= ldexp ( nf, -(trial_exp-1) );
+            }
+            
         }
         else
         {
