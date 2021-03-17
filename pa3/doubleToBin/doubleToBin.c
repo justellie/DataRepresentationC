@@ -25,12 +25,12 @@ int main(int argc, char *argv[]) {
     // the reference solution ('the easy way')
     // you are not allowed to print from this casted 'ref_bits' variable below
     // but, it is helpful for validating your solution
-    unsigned long int ref_bits = *(unsigned long int*) &value;
+    //unsigned long int ref_bits = *(unsigned long int*) &value;
 
     // THE SIGN BIT
-    bool sign = value<0.0;
+    bool sign = value<0;
     printf("%d_",sign);
-    assert (sign == (1&ref_bits>>(EXP_SZ+FRAC_SZ))); // validate your result against the reference
+   // assert (sign == (1&ref_bits>>(EXP_SZ+FRAC_SZ))); // validate your result against the reference
     
     // THE EXP FIELD
     // find the exponent E such that the fraction will be a canonical fraction:
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     /* ... */
     unsigned short bias = (1<<(EXP_SZ-1))-1;
     signed short exp=0;
-    if(fraction>0)
+    if(fraction>1e-308)
     {
         //https://www.tutorialspoint.com/c_standard_library/c_function_frexp.htm
         frexp(fraction,&trial_exp);
@@ -64,36 +64,26 @@ int main(int argc, char *argv[]) {
     // prepare the canonical fraction such that:
     // 1.0 <= fraction < 2.0
     /* ... */
+    double intpart ;
     int fract_bit;
     nf = fraction;
-    if (fraction >= 0.99999)
+    if ((fabs(nf-2) < 1e-308) ||(fabs(nf-1) < 1e-308) ||( nf > 1 && nf > 2))
     {
-        while (nf >= 2 && !(nf <= 1))
-        {
-            nf = nf / 2;
-        }
-        if(nf==1)
-        {
-            nf = 0;
-        }
+       nf= ldexp ( nf, -(trial_exp-1) );
+       
     }
     else
     {
-        frexp(fraction, &trial_exp);
-        trial_exp--;
-        int i = 0;
-        while (i > trial_exp)
+        if(trial_exp!=0)
         {
-            nf *= 2;
-            fract_bit = nf;
-            if (fract_bit)
-            {
-                nf -= fract_bit;
-            }
-            i--;
+            nf= ldexp ( nf, -(trial_exp-1) );
         }
-        exp = 0;
+        else
+        {
+            nf=0;
+        }
     }
+    nf=modf(nf, &intpart);
 
 
     bool frac_array[FRAC_SZ+1]; // one extra LSB bit for rounding
